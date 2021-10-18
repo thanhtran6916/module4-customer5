@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete</title>
+</head>
+<body>
+<h1>Delete</h1>
+<div th:object="${customer}">
+    <p th:text="*{id}"></p>
+    <p th:text="*{name}"></p>
+    <p th:text="*{address}"></p>
+    <p>
+        <img th:src="@{'/img/' + *{image}}" width="50px" height="50px" alt="">
+    </p>
+    <p></p>
+    <form method="post">
+        <button>Yes</button>
+        <a href="/customer">No</a>
+    </form>
+</div>
+</body>
+</html>
