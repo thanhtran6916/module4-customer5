@@ -1,12 +1,11 @@
 package com.customer.repository.product;
 
 import com.customer.model.Customer;
+import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 @Repository
@@ -25,7 +24,14 @@ public class CustomerRepository implements ICustomerRepository {
     @Override
     public void save(Customer customer) {
         if (customer.getId() == null) {
-            entityManager.persist(customer);
+            StoredProcedureQuery query = entityManager.createStoredProcedureQuery("createCustomer");
+            query.registerStoredProcedureParameter("customerName", String.class, ParameterMode.IN);
+            query.setParameter("customerName", customer.getName());
+            query.registerStoredProcedureParameter("customerAddress", String.class, ParameterMode.IN);
+            query.setParameter("customerAddress", customer.getAddress());
+            query.registerStoredProcedureParameter("customerImage", String.class, ParameterMode.IN);
+            query.setParameter("customerImage", customer.getImage());
+            query.execute();
         } else {
             entityManager.merge(customer);
         }
